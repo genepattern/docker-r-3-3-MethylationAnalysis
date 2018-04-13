@@ -21,7 +21,6 @@ RUN    apt-get install libxml2-dev --yes && \
     apt-get install libcurl4-gnutls-dev --yes && \
     apt-get install mesa-common-dev --yes 
 
-#    apt-get install --yes libglu1-mesa-dev freeglut3-dev  bwidget
     
 
 COPY common/container_scripts/runS3OnBatch.sh /usr/local/bin/runS3OnBatch.sh

@@ -2,4 +2,4 @@
 source("https://bioconductor.org/biocLite.R")
 biocLite("conumee", ask=FALSE)
 biocLite("minfi", ask=FALSE)
-
+install.packages("optparse")
