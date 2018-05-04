@@ -2,4 +2,5 @@
 source("https://bioconductor.org/biocLite.R")
 biocLite("conumee", ask=FALSE)
 biocLite("minfi", ask=FALSE)
-install.packages("optparse")
+biocLite("biomaRt", ask=FALSE)
+install.packages(c("optparse", "parallel", "foreach", "doParallel"))
