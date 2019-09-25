@@ -1,6 +1,6 @@
 # copyright 2017-2018 Regents of the University of California and the Broad Institute. All rights reserved.
 
-FROM r-base:3.4.1
+FROM r-base:3.6.1
 
 RUN mkdir /build
 
@@ -36,6 +36,7 @@ ENV R_HOME=/usr/local/lib64/R
 COPY install_stuff.R /build/source
 
 RUN Rscript /build/source/install_stuff.R
+# Updated 2019-09-25
  
 CMD ["/usr/local/bin/runS3OnBatch.sh" ]
 
