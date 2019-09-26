@@ -1,6 +1,9 @@
 ## try http:// if https:// URLs are not supported
-source("https://bioconductor.org/biocLite.R")
-biocLite("conumee", ask=FALSE)
-biocLite("minfi", ask=FALSE)
-biocLite("biomaRt", ask=FALSE)
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install(ask=FALSE)
+biocManager::install("conumee",ask=FALSE)
+biocManager::install("minfi", ask=FALSE)
+biocManager::install("biomaRt", ask=FALSE)
+
 install.packages(c("optparse", "parallel", "foreach", "doParallel"))
