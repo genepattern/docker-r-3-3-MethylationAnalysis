@@ -9,19 +9,12 @@ ENV LANG=C LC_ALL=C
 # Installing some other required libraries
 USER root
 
-#RUN mkdir /build
-#COPY install_stuff.R /build/source/install_stuff.R
-
-#RUN Rscript /build/source/install_stuff.R
-# Updated 2019-09-25
+# Updated 2019-09-27
 
 RUN R -e 'install.packages("BiocManager",repos = "http://cran.us.r-project.org")'
 
-#RUN apt-get install libcurl4-openssl-dev libxml2-dev
-
 RUN R -e 'BiocManager::install(c("XML", "RCurl","httr"), ask=FALSE)'
-
-#RUN R -e 'BiocManager::install(c("GenomicRanges", "SummarizedExperiment","bumphunter","GenomeInfoDb","illuminaio","genefilter","GEOquery"), ask=FALSE)'
+RUN R -e 'BiocManager::install(c("GenomicRanges", "SummarizedExperiment","bumphunter","GenomeInfoDb","illuminaio","genefilter","GEOquery"), ask=FALSE)'
 
 #RUN R -e 'BiocManager::install("minfi", ask=FALSE)'
 
