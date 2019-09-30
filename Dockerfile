@@ -1,41 +1,29 @@
 # copyright 2017-2018 Regents of the University of California and the Broad Institute. All rights reserved.
 
-FROM r-base:3.4.1
+# This contains R 3.6.1
+FROM jupyter/r-notebook:1386e2046833
 
-RUN mkdir /build
+MAINTAINER Edwin Juarez <ejuarez@ucsd.edu>
+ENV LANG=C LC_ALL=C
 
-RUN apt-get update && apt-get upgrade --yes && \
-    apt-get install build-essential --yes && \
-    apt-get install python --yes && \
-    wget --no-check-certificate https://bootstrap.pypa.io/get-pip.py && \
-    python get-pip.py 
+# Installing some other required libraries
+USER root
 
-RUN pip install awscli 
+# Updated 2019-09-27
 
-RUN apt-get update && apt-get upgrade --yes && \
-    apt-get install -t unstable libmariadbclient-dev  --yes && \
-    apt-get install -t unstable libssl-dev  --yes && \
-    apt-get install curl --yes 
+RUN R -e 'install.packages("BiocManager",repos = "http://cran.us.r-project.org")'
 
-RUN    apt-get install libxml2-dev --yes && \
-    apt-get install libcurl4-gnutls-dev --yes && \
-    apt-get install mesa-common-dev --yes 
+RUN R -e 'BiocManager::install(c("XML", "RCurl","httr"), ask=FALSE)'
+RUN R -e 'BiocManager::install(c("GenomicRanges", "SummarizedExperiment","bumphunter","GenomeInfoDb","illuminaio","genefilter","GEOquery"), ask=FALSE)'
 
-    
+RUN R -e 'BiocManager::install("minfi", ask=FALSE)'
 
-COPY common/container_scripts/runS3OnBatch.sh /usr/local/bin/runS3OnBatch.sh
-COPY common/container_scripts/installPackages.R-2  /build/source/installPackages.R
-COPY sources.list /etc/apt/sources.list
-COPY common/container_scripts/runLocal.sh /usr/local/bin/runLocal.sh
-COPY Rprofile.gp.site ~/.Rprofile
-COPY Rprofile.gp.site /usr/lib/R/etc/Rprofile.site
-RUN chmod ugo+x /usr/local/bin/runS3OnBatch.sh
-ENV R_LIBS_S3=/genepattern-server/Rlibraries/R344/rlibs
-ENV R_LIBS=/usr/local/lib/R/site-library
-ENV R_HOME=/usr/local/lib64/R
-COPY install_stuff.R /build/source
+RUN R -e 'BiocManager::install(c("IlluminaHumanMethylation450kanno.ilmn12.hg19", "IlluminaHumanMethylation450kmanifest","IlluminaHumanMethylationEPICanno.ilm10b2.hg19","IlluminaHumanMethylationEPICmanifest","rtracklayer","genefilter","GEOquery"), ask=FALSE)'
+RUN R -e 'BiocManager::install("conumee",ask=FALSE)'
 
-RUN Rscript /build/source/install_stuff.R
- 
-CMD ["/usr/local/bin/runS3OnBatch.sh" ]
+RUN R -e 'BiocManager::install("biomaRt", ask=FALSE)'
 
+RUN R -e 'install.packages(c("optparse", "parallel", "foreach", "doParallel"),repos = "http://cran.us.r-project.org")'
+
+## Run this command:
+## docker build -t genepattern/docker-r-3-4-methylationanalysis:0.14.9 .
